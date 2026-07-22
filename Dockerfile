@@ -1,13 +1,4 @@
 # Base Image
 FROM python:3.13.14
-
-# Work directory
-WORKDIR /app
-COPY . /app
-# Copy requirements and install dependencies
-COPY requirements.txt requirements.txt
-RUN pip install --root-user-action=ignore -r requirements.txt
-# Copy other project files
-COPY . .
-EXPOSE 443
+RUN pip install --root-user-action=ignore -r requests
 CMD ["python", "main.py"]
