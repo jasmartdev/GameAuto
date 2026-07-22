@@ -20,6 +20,9 @@ def run_health_check_server():
 if __name__ == '__main__':
     health_thread = threading.Thread(target=run_health_check_server, daemon=True)
     health_thread.start()
+    sleep_time_base = 50
+    sleep_time_er = 120
+    sleep_time = sleep_time_base
     while True:
         requests.post(
         url=start_mission_url, 
@@ -27,11 +30,16 @@ if __name__ == '__main__':
         data=start_mission_body,
         timeout=60
         )
-        time.sleep(45)
-        requests.post(
+        time.sleep(sleep_time)
+        response = requests.post(
         url=complete_mission_url, 
         headers=complete_mission_headers, 
         data=complete_mission_body,
         timeout=60
         )
+        data = response.json()
+        if data.get('error'):
+            sleep_time = sleep_time_er
+        else:
+            sleep_time = sleep_time_base
         time.sleep(0.1)
