@@ -14,7 +14,8 @@ if __name__ == '__main__':
         response = requests.post(
         url=start_mission_url, 
         headers=start_mission_headers, 
-        data=start_mission_body
+        data=start_mission_body,
+        timeout=30
         )
         data = response.json()
         print(data)
@@ -22,6 +23,7 @@ if __name__ == '__main__':
         requests.post(
         url=complete_mission_url, 
         headers=complete_mission_headers, 
-        data=complete_mission_body
+        data=complete_mission_body,
+        timeout=30
         )
         time.sleep(0.1)
