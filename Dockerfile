@@ -12,6 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application code
 COPY main.py .
-
+EXPOSE 443
 # Run the script when the container launches
 CMD ["python", "main.py"]
