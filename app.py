@@ -11,11 +11,13 @@ complete_mission_body = b'{"missionId": 12, "victory": false, "monstersKilled": 
 
 if __name__ == '__main__':
     while True:
-        requests.post(
-        url=start_mission_url, 
+        response = requests.post(
+        url=Mission.start_mission_url, 
         headers=start_mission_headers, 
-        data=start_mission_body
+        data=Mission.start_mission_body
         )
+        data = response.json()
+        print(data)
         time.sleep(37)
         requests.post(
         url=complete_mission_url, 
