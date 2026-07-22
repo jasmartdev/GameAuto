@@ -1,6 +1,5 @@
 import time
 import requests
-import subprocess
 import threading
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 
@@ -22,16 +21,13 @@ def run_health_check_server():
 if __name__ == '__main__':
     health_thread = threading.Thread(target=run_health_check_server, daemon=True)
     health_thread.start()
-    i = 0
     while True:
-        response = requests.post(
+        requests.post(
         url=start_mission_url, 
         headers=start_mission_headers, 
         data=start_mission_body,
         timeout=60
         )
-        data = response.json()
-        print(data)
         time.sleep(37)
         requests.post(
         url=complete_mission_url, 
@@ -40,7 +36,3 @@ if __name__ == '__main__':
         timeout=60
         )
         time.sleep(0.1)
-        i = i + 1
-        print(f'resend {i} times')
-        if i % 10 == 0:
-            subprocess.run("cls", shell=True)
