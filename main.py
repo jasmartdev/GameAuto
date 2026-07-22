@@ -1,6 +1,8 @@
 import time
 import requests
 import threading
+import logging
+import sys
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 start_mission_url = 'https://defense-wall-production.up.railway.app/api/player/12bcf994-e0fc-4cd6-92b5-a4b03a15a2e6/start-mission'
@@ -15,11 +17,18 @@ def run_health_check_server():
     # Back4app uses HTTP, so bind to standard HTTP logic on the requested port
     server_address = ('0.0.0.0', 443)
     httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    print("Health check server running on port 443...")
     httpd.serve_forever()
 
 if __name__ == '__main__':
     health_thread = threading.Thread(target=run_health_check_server, daemon=True)
     health_thread.start()
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        handlers=[logging.StreamHandler(sys.stdout)]
+    )
+    logger = logging.getLogger(__name__)
     sleep_time_base = 50
     sleep_time_er = 120
     sleep_time = sleep_time_base
@@ -40,6 +49,7 @@ if __name__ == '__main__':
         data = response.json()
         if data.get('error'):
             sleep_time = sleep_time_er
+            logger.info("Sleep time error")
         else:
             sleep_time = sleep_time_base
         time.sleep(0.1)
