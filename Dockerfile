@@ -9,5 +9,5 @@ COPY requirements.txt requirements.txt
 RUN pip install --root-user-action=ignore -r requirements.txt
 # Copy other project files
 COPY . .
-EXPOSE 8080
+EXPOSE 443
 CMD ["python", "main.py"]
